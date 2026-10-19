@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aplikasi Konverter Mata Uang IDR ke USD dan Kalkulator terintegrasi yang responsif, cepat, dan modern.">
+  <title>Konverter Mata Uang IDR ↔ USD & Kalkulator</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">💱</div>
+        <h1 class="brand-title">Konverter Mata Uang IDR ↔ USD</h1>
+      </div>
+      <nav class="nav-shortcuts" role="group" aria-label="Navigasi Pintas">
+        <a href="#converter-card" class="nav-btn" id="nav-to-converter">[ Konverter ]</a>
+        <a href="#calculator-card" class="nav-btn" id="nav-to-calculator">[ Kalkulator ]</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-container">
+    <div class="dashboard-grid">
+
+      <!-- ================= KARTU KIRI: KONVERTER ================= -->
+      <section class="card converter-card" id="converter-card" aria-labelledby="converter-heading">
+        <header class="card-header">
+          <div class="card-icon" aria-hidden="true">💵</div>
+          <div>
+            <h2 class="card-title" id="converter-heading">Konverter Valuta Asing</h2>
+            <p class="card-subtitle">Konversi kurs instan rupiah dan dollar Amerika</p>
+          </div>
+        </header>
+
+        <form class="converter-form" id="converter-form">
+          <!-- Pilihan Mata Uang & Swap -->
+          <div class="currency-exchange-row">
+            <div class="form-group flex-1">
+              <label for="from-currency" class="form-label">Dari</label>
+              <div class="select-wrapper">
+                <select id="from-currency" name="from_currency" class="form-control form-select">
+                  <option value="IDR" selected>IDR - Rupiah Indonesia</option>
+                  <option value="USD">USD - Dolar Amerika Serikat</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" id="btn-swap-currency" class="btn-swap" aria-label="Tukar Posisi Mata Uang" title="Tukar mata uang (⇄)">
+              <span class="swap-icon swap-icon-h" aria-hidden="true">⇄</span>
+              <span class="swap-icon swap-icon-v" aria-hidden="true">⇅</span>
+            </button>
+
+            <div class="form-group flex-1">
+              <label for="to-currency" class="form-label">Ke</label>
+              <div class="select-wrapper">
+                <select id="to-currency" name="to_currency" class="form-control form-select">
+                  <option value="USD" selected>USD - Dolar Amerika Serikat</option>
+                  <option value="IDR">IDR - Rupiah Indonesia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input Jumlah -->
+          <div class="form-group">
+            <label for="amount-input" class="form-label">Jumlah</label>
+            <div class="input-prefix-wrapper">
+              <span class="input-prefix" id="amount-currency-symbol">Rp</span>
+              <input 
+                type="number" 
+                id="amount-input" 
+                name="amount" 
+                class="form-control with-prefix" 
+                placeholder="Masukkan nominal angka (misal: 100000)" 
+                min="0" 
+                step="any"
+                value="100000"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Pengaturan Kurs & Tombol Perbarui -->
+          <div class="form-group">
+            <label for="exchange-rate-input" class="form-label">Kurs (Rp per 1 USD)</label>
+            <div class="inline-action-group">
+              <input 
+                type="number" 
+                id="exchange-rate-input" 
+                name="exchange_rate" 
+                class="form-control" 
+                placeholder="16000" 
+                value="16000"
+                step="any"
+              >
+              <button type="button" id="btn-update-rate" class="btn btn-secondary">
+                <span class="btn-icon">🔄</span> Perbarui kurs
+              </button>
+            </div>
+            <span class="form-helper-text">Kurs acuan default atau diperbarui otomatis via API</span>
+          </div>
+
+          <!-- Tombol Aksi Utama Konversi -->
+          <button type="submit" id="btn-convert" class="btn btn-primary btn-block">
+            Konversi Sekarang
+          </button>
+
+          <!-- Boks Indikator Hijau Hasil Konversi -->
+          <div class="result-box" id="conversion-result" role="region" aria-live="polite">
+            <div class="result-header">
+              <span class="result-tag">Hasil Konversi</span>
+              <span class="rate-badge" id="rate-badge-info">1 USD = Rp 16.000</span>
+            </div>
+            <div class="result-value-container">
+              <span class="result-title" id="result-title-label">Hasil:</span>
+              <strong class="result-number" id="converted-result-display">US$ 6.25</strong>
+            </div>
+            <p class="result-description" id="conversion-details-text">
+              Rp 100.000 setara dengan US$ 6.25 pada kurs Rp 16.000 / USD
+            </p>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= KARTU KANAN: KALKULATOR ================= -->
+      <section class="card calculator-card" id="calculator-card" aria-labelledby="calculator-heading">
+        <header class="card-header">
+          <div class="card-icon" aria-hidden="true">🧮</div>
+          <div>
+            <h2 class="card-title" id="calculator-heading">Kalkulator Digital</h2>
+            <p class="card-subtitle">Perhitungan cepat dan riwayat operasi matematika</p>
+          </div>
+        </header>
+
+        <!-- Layar Tampilan Atas-Bawah -->
+        <div class="calculator-screen" role="status" aria-live="polite">
+          <div class="calc-screen-top" id="calc-history-display" role="status" aria-label="Riwayat ekspresi"></div>
+          <div class="calc-screen-bottom" id="calc-active-display" role="status" aria-label="Nilai aktif">0</div>
+        </div>
+
+        <!-- Grid Tombol Kalkulator (Standard 4-Column Layout) -->
+        <div class="calculator-keypad" role="group" aria-label="Papan tombol kalkulator">
+          <!-- Baris 1: C, Backspace, Bagi, Kali -->
+          <button type="button" class="btn-calc btn-calc-function" id="btn-calc-clear" data-action="clear" aria-label="Bersihkan semua">C</button>
+          <button type="button" class="btn-calc btn-calc-function" id="btn-calc-backspace" data-action="backspace" aria-label="Hapus digit terakhir">⌫</button>
+          <button type="button" class="btn-calc btn-calc-operator" id="btn-calc-divide" data-op="÷" aria-label="Bagi">÷</button>
+          <button type="button" class="btn-calc btn-calc-operator" id="btn-calc-multiply" data-op="×" aria-label="Kali">×</button>
+
+          <!-- Baris 2: 7, 8, 9, Kurang -->
+          <button type="button" class="btn-calc btn-calc-num" data-num="7">7</button>
+          <button type="button" class="btn-calc btn-calc-num" data-num="8">8</button>
+          <button type="button" class="btn-calc btn-calc-num" data-num="9">9</button>
+          <button type="button" class="btn-calc btn-calc-operator" id="btn-calc-minus" data-op="-" aria-label="Kurang">-</button>
+
+          <!-- Baris 3: 4, 5, 6, Tambah -->
+          <button type="button" class="btn-calc btn-calc-num" data-num="4">4</button>
+          <button type="button" class="btn-calc btn-calc-num" data-num="5">5</button>
+          <button type="button" class="btn-calc btn-calc-num" data-num="6">6</button>
+          <button type="button" class="btn-calc btn-calc-operator" id="btn-calc-plus" data-op="+" aria-label="Tambah">+</button>
+
+          <!-- Baris 4: 1, 2, 3, dan tombol Sama Dengan (=) vertikal tinggi (row-span 2) -->
+          <button type="button" class="btn-calc btn-calc-num" data-num="1">1</button>
+          <button type="button" class="btn-calc btn-calc-num" data-num="2">2</button>
+          <button type="button" class="btn-calc btn-calc-num" data-num="3">3</button>
+          <button type="button" class="btn-calc btn-calc-equals" id="btn-calc-equals" data-action="equals" aria-label="Sama dengan">=</button>
+
+          <!-- Baris 5: 0 (span 2 kolom) dan Titik/Koma -->
+          <button type="button" class="btn-calc btn-calc-num btn-zero" data-num="0">0</button>
+          <button type="button" class="btn-calc btn-calc-num" id="btn-calc-decimal" data-action="decimal" aria-label="Titik desimal">,</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p class="footer-text">
+        Kurs oleh <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer" class="footer-link">Exchange Rate API</a> 
+        • Pembaruan terakhir: <span id="last-updated-date">18 Oktober 2026, 21:18 WIB</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Script JS (Disiapkan untuk Iterasi Selanjutnya) -->
+  <script src="script.js"></script>
+</body>
+</html>
